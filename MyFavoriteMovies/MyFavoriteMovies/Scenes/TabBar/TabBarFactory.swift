@@ -12,9 +12,6 @@ class TabBarFactory: SceneFactory {
     static func build() -> UIViewController {
         let tabBarVC = UITabBarController()
         tabBarVC.tabBar.isTranslucent = false
-        tabBarVC.tabBar.tintColor = .white
-        tabBarVC.tabBar.unselectedItemTintColor = .gray
-        tabBarVC.tabBar.backgroundColor = .black
         tabBarVC.viewControllers = [buildSearchTab(), buildFavoritesTab()]
         return tabBarVC
     }
