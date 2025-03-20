@@ -1,0 +1,39 @@
+# Arquivos do macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Arquivos do Xcode
+xcuserdata/
+*.xcworkspace/
+*.xcuserstate
+*.xccheckout
+*.xcscmblueprint
+DerivedData/
+.idea/
+*.moved-aside
+*.hmap
+*.lock
+
+# Logs e Arquivos Temporários
+*.log
+*.swp
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+
+# Arquivos de Build
+build/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Certificados e Perfis de Provisionamento
+*.mobileprovision
+*.cer
+*.p12
+*.xcconfig
+
+# Arquivos de Cache do Xcode
+*.xcodeproj/project.xcworkspace/
+*.xcodeproj/xcuserdata/
