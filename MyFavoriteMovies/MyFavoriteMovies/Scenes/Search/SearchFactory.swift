@@ -10,7 +10,20 @@ import UIKit
 class SearchFactory: SceneFactory {
     
     static func build() -> UIViewController {
-        let searchVC = SearchViewController()
+        let requestProvider = RequestProvider()
+        let movieWorker = MovieWorker(requestProvider: requestProvider)
+        let interactor = SearchInteractor(movieWorker: movieWorker)
+        
+        let router = SearchRouter()
+        
+        let presenter = SearchPresenter(interactor: interactor, router: router)
+        interactor.output = presenter
+        
+        let searchVC = SearchViewController(presenter: presenter)
+        presenter.output = searchVC
+        router.viewController = searchVC
+        
+        
         return searchVC
     }
     

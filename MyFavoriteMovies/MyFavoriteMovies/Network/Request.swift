@@ -15,7 +15,7 @@ protocol Request {
     var body: Data? { get }
     var method: HTTPMethod { get }
     
-    func urlRequest() -> URL?
+    func urlRequest() -> URLRequest?
 }
 
 enum HTTPMethod: String {

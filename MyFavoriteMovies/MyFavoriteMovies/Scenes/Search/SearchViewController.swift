@@ -48,6 +48,18 @@ class SearchViewController: UIViewController {
         return errorView
     }()
     
+    let presenter: SearchPresenterInput
+    
+    init(presenter: SearchPresenterInput) {
+        self.presenter = presenter
+        super.init(nibName: nil, bundle: nil)
+        setup()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Search"
@@ -59,17 +71,8 @@ class SearchViewController: UIViewController {
         navigationItem.largeTitleDisplayMode = .always
     }
     
-    init() {
-        super.init(nibName: nil, bundle: nil)
-        setup()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     @objc private func searchButtonWasTapped() {
-        
+        presenter.search(term: searchBar.text)
     }
 }
 
@@ -100,5 +103,27 @@ extension SearchViewController: ViewCode {
 extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchButtonWasTapped()
+    }
+}
+
+extension SearchViewController: SearchPresenterOutput {
+    func setLoading(isActive: Bool) {
+        DispatchQueue.main.async {
+            isActive ? self.loadingView.startAnimating() : self.loadingView.stopAnimating()
+        }
+    }
+    
+    func setError(isActive: Bool) {
+        DispatchQueue.main.async {
+            self.errorView.isHidden = !isActive
+        }
+    }
+    
+    func showEmptyTermAlert() {
+        DispatchQueue.main.async {
+            let alertController = UIAlertController(title: "Empty Term", message: "Please enter a search term.", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .default))
+            self.present(alertController, animated: true)
+        }
     }
 }

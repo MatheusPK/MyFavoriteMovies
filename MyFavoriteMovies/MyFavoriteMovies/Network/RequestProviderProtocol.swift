@@ -7,11 +7,11 @@
 
 import Foundation
 
-protocol RequestProvider {
+protocol RequestProviderProtocol {
     func make<T: Decodable>(_ request: Request, completion: @escaping (Result<T?, RequestError>) -> Void)
 }
 
-class RequestProviderImpl: RequestProvider {
+class RequestProvider: RequestProviderProtocol {
     func make<T: Decodable>(_ request: Request, completion: @escaping (Result<T?, RequestError>) -> Void) {
         guard let urlRequest = request.urlRequest() else {
             completion(.failure(.invalidURL))
