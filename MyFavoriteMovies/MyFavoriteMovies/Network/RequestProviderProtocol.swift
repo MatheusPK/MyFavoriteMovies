@@ -18,9 +18,14 @@ class RequestProvider: RequestProviderProtocol {
             return
         }
         
-        let dataTask = URLSession.shared.dataTask(with: urlRequest) { data, _, error in
+        let dataTask = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
             if let error = error {
-                completion(.failure(.connectionFailed))
+                completion(.failure(.requestError))
+                return
+            }
+            
+            if let httpURLResponse = response as? HTTPURLResponse, !(200...299).contains(httpURLResponse.statusCode) {
+                completion(.failure(.invalidResponse))
                 return
             }
             
@@ -29,6 +34,7 @@ class RequestProvider: RequestProviderProtocol {
                     let decodedData = try JSONDecoder().decode(T.self, from: data)
                     completion(.success(decodedData))
                 } catch {
+                    print(error)
                     completion(.failure(.decodingFailed))
                 }
                 return

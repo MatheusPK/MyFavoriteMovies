@@ -6,7 +6,7 @@
 //
 
 protocol MovieWorkerProtocol {
-    func getMovies(for term: String, completion: @escaping (Result<[String], RequestError>) -> Void)
+    func getMovies(for term: String, completion: @escaping (Result<[Movie], RequestError>) -> Void)
 }
 
 class MovieWorker: MovieWorkerProtocol {
@@ -16,6 +16,15 @@ class MovieWorker: MovieWorkerProtocol {
         self.requestProvider = requestProvider
     }
     
-    func getMovies(for term: String, completion: @escaping (Result<[String], RequestError>) -> Void) {}
+    func getMovies(for term: String, completion: @escaping (Result<[Movie], RequestError>) -> Void) {
+        requestProvider.make(MoviesRequest.movies(term: term)) { (result: (Result<MoviesResult?, RequestError>)) in
+            switch result {
+            case .success(let moviesResult):
+                completion(.success(moviesResult?.results ?? []))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
     
 }

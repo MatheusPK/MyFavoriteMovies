@@ -40,7 +40,7 @@ class SearchPresenter: SearchPresenterInput {
 }
 
 extension SearchPresenter: SearchInteractorOutput {
-    func searchWasSuccessful(with movies: [String] ) {
+    func searchWasSuccessful(with movies: [Movie]) {
         output?.setLoading(isActive: false)
         router.goToMovieList(movies: movies)
     }

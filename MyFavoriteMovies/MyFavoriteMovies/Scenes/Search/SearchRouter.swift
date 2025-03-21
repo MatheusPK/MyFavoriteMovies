@@ -8,15 +8,17 @@
 import UIKit
 
 protocol SearchRouterProtocol {
-    func goToMovieList(movies: [String])
+    func goToMovieList(movies: [Movie])
 }
 
 class SearchRouter: SearchRouterProtocol {
     
     weak var viewController: UIViewController?
     
-    func goToMovieList(movies: [String]) {
-        let vc = MovieListFactory.build()
-        viewController?.navigationController?.pushViewController(vc, animated: true)
+    func goToMovieList(movies: [Movie]) {
+        DispatchQueue.main.async { [weak self] in
+            let vc = MovieListFactory.build()
+            self?.viewController?.navigationController?.pushViewController(vc, animated: true)
+        }
     }
 }

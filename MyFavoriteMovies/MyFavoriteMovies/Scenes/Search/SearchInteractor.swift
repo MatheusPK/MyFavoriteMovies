@@ -10,7 +10,7 @@ protocol SearchInteractorInput: AnyObject {
 }
 
 protocol SearchInteractorOutput: AnyObject {
-    func searchWasSuccessful(with movies: [String]?)
+    func searchWasSuccessful(with movies: [Movie])
     func searchFailed(with error: RequestError)
 }
 

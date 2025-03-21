@@ -14,6 +14,7 @@ protocol Request {
     var headers: [String: String] { get }
     var body: Data? { get }
     var method: HTTPMethod { get }
+    var queryItems: [URLQueryItem]? { get }
     
     func urlRequest() -> URLRequest?
 }
@@ -28,6 +29,7 @@ extension Request {
         urlComponents.scheme = scheme
         urlComponents.host = host
         urlComponents.path = path
+        urlComponents.queryItems = queryItems
         
         guard let url = urlComponents.url else {
             return nil
@@ -35,7 +37,7 @@ extension Request {
         
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = method.rawValue
-        urlRequest.allHTTPHeaderFields = headers
+        headers.forEach { urlRequest.setValue($0.value, forHTTPHeaderField: $0.key) }
         urlRequest.httpBody = body
         
         return urlRequest

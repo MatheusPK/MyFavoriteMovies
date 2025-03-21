@@ -8,5 +8,6 @@
 enum RequestError: Error {
     case invalidURL
     case decodingFailed
-    case connectionFailed
+    case requestError
+    case invalidResponse
 }
