@@ -13,8 +13,6 @@ class ImageCache {
 
 extension UIImageView {
     func setImage(from request: Request, placeholder: UIImage? = nil) {
-        guard image == nil else { return }
-        
         self.image = placeholder
         
         let cacheKey = request.urlRequest()?.url?.absoluteString

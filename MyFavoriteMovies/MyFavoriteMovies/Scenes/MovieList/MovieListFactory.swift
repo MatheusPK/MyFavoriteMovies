@@ -14,7 +14,8 @@ class MovieListFactory: SceneFactory {
     }
     
     static func build(with dependecies: Dependencies) -> UIViewController {
-        let interactor = MovieListInteractor()
+        let favoriteMovieWorker = FavoriteMovieWorker()
+        let interactor = MovieListInteractor(worker: favoriteMovieWorker)
         
         let router = MovieListRouter()
         

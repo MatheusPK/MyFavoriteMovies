@@ -66,10 +66,12 @@ class MovieCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with movie: Movie, didTapHeartButton: () -> ()) {
+    func configure(with movie: Movie, isFavorite: Bool, didTapHeartButton: @escaping () -> ()) {
         poster.setImage(from: MoviesRequest.image(path: movie.posterPath ?? ""), placeholder: UIImage(systemName: "movieclapper"))
         movieTitle.text = movie.originalTitle
         rating.text = String(format: "Rating: %.1f/10", movie.voteAverage ?? 0)
+        heartButton.imageView?.image = isFavorite ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart")
+        self.didTapHeartButton = didTapHeartButton
     }
     
     @objc private func heartButtonTapped() {

@@ -6,6 +6,7 @@
 //
 
 protocol MovieListInteractorInput {
+    func isFavorite(movie: Movie) -> Bool
     func toggleFavorite(for movie: Movie)
 }
 
@@ -14,9 +15,20 @@ protocol MovieListInteractorOutput: AnyObject {
 }
 
 class MovieListInteractor: MovieListInteractorInput {
+    
     weak var output: MovieListInteractorOutput?
+    private var worker: FavoriteMovieWorker
+    
+    init(worker: FavoriteMovieWorker) {
+        self.worker = worker
+    }
+    
+    func isFavorite(movie: Movie) -> Bool {
+        return worker.isFavorite(movie: movie)
+    }
     
     func toggleFavorite(for movie: Movie) {
+        worker.toggleFavorite(movie: movie)
         output?.didToggleFavoriteSuccesfuly(for: movie)
     }
 }

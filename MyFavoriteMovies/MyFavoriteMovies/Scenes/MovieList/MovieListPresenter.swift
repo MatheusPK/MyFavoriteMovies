@@ -10,6 +10,7 @@ protocol MovieListPresenterInput {
     func movie(at index: Int) -> Movie
     func didSelectMovie(at index: Int)
     func didToggleFavorite(at index: Int)
+    func isFavorite(movie: Movie) -> Bool
 }
 
 protocol MovieListPresenterOutput: AnyObject {
@@ -49,11 +50,14 @@ class MovieListPresenter: MovieListPresenterInput {
         let movie = movies[index]
         interactor.toggleFavorite(for: movie)
     }
+    
+    func isFavorite(movie: Movie) -> Bool {
+        return interactor.isFavorite(movie: movie)
+    }
 }
 
 extension MovieListPresenter: MovieListInteractorOutput {
     func didToggleFavoriteSuccesfuly(for movie: Movie) {
-        // atualizar filme favorito aqui
         output?.reloadData()
     }
 }
