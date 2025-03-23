@@ -15,9 +15,9 @@ extension UIImageView {
     func setImage(from request: Request, placeholder: UIImage? = nil) {
         self.image = placeholder
         
-        let cacheKey = request.urlRequest()?.url?.absoluteString
+        let cacheKey = request.path
         
-        if let cacheKey = cacheKey, let cachedImage = ImageCache.storage[cacheKey] {
+        if let cachedImage = ImageCache.storage[cacheKey] {
             self.image = cachedImage
             return
         }
@@ -28,7 +28,7 @@ extension UIImageView {
             requestProvider.fetchData(request) { result in
                 switch result {
                 case .success(let data):
-                    if let image = UIImage(data: data), let cacheKey = cacheKey {
+                    if let image = UIImage(data: data) {
                         ImageCache.storage[cacheKey] = image
                         DispatchQueue.main.async {
                             self?.image = image
