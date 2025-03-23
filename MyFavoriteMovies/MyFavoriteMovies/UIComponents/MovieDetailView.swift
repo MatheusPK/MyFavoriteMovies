@@ -1,10 +1,3 @@
-//
-//  MovieDetailView.swift
-//  MyFavoriteMovies
-//
-//  Created by Matheus Pereira Kulick on 23/03/25.
-//
-
 import UIKit
 
 class MovieDetailView: UIView {
@@ -32,7 +25,13 @@ class MovieDetailView: UIView {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 20)
         label.numberOfLines = 0
-        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var originalTitleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.textColor = .gray
         return label
     }()
     
@@ -40,22 +39,48 @@ class MovieDetailView: UIView {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
         label.numberOfLines = 0
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private lazy var releaseDateLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.italicSystemFont(ofSize: 14)
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private lazy var voteAverageLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
+    }()
+    
+    private lazy var budgetLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 16)
+        return label
+    }()
+    
+    private lazy var revenueLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 16)
+        return label
+    }()
+    
+    private lazy var detailsStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            originalTitleLabel,
+            titleLabel,
+            overviewLabel,
+            releaseDateLabel,
+            budgetLabel,
+            revenueLabel,
+            voteAverageLabel
+        ])
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        stackView.alignment = .leading
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
     }()
     
     override init(frame: CGRect) {
@@ -71,11 +96,24 @@ class MovieDetailView: UIView {
         if let backdropPath = movie.backdropPath {
             backdropImageView.setImage(from: MoviesRequest.image(path: backdropPath), placeholder: UIImage(systemName: "movieclapper"))
         }
-                                       
+        
         titleLabel.text = movie.title
+        originalTitleLabel.text = "Original Title: \(movie.originalTitle ?? "N/A")"
         overviewLabel.text = movie.overview
         releaseDateLabel.text = "Release Date: " + (movie.releaseDate ?? "N/A")
-        voteAverageLabel.text = "⭐ \(movie.voteAverage ?? 0)"
+        voteAverageLabel.text = "⭐ \(String(format: "%.1f", movie.voteAverage ?? 0))"
+        
+        if let budget = movie.budget {
+            budgetLabel.text = "Budget: $\(budget)"
+        } else {
+            budgetLabel.text = "Budget: N/A"
+        }
+        
+        if let revenue = movie.revenue {
+            revenueLabel.text = "Revenue: $\(revenue)"
+        } else {
+            revenueLabel.text = "Revenue: N/A"
+        }
     }
 }
 
@@ -84,10 +122,7 @@ extension MovieDetailView: ViewCode {
         addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubview(backdropImageView)
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(overviewLabel)
-        contentView.addSubview(releaseDateLabel)
-        contentView.addSubview(voteAverageLabel)
+        contentView.addSubview(detailsStackView)
     }
     
     func addConstraints() {
@@ -108,22 +143,10 @@ extension MovieDetailView: ViewCode {
             backdropImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             backdropImageView.heightAnchor.constraint(equalToConstant: 200),
             
-            titleLabel.topAnchor.constraint(equalTo: backdropImageView.bottomAnchor, constant: 10),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            
-            overviewLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
-            overviewLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            overviewLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            
-            releaseDateLabel.topAnchor.constraint(equalTo: overviewLabel.bottomAnchor, constant: 8),
-            releaseDateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            releaseDateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            
-            voteAverageLabel.topAnchor.constraint(equalTo: releaseDateLabel.bottomAnchor, constant: 8),
-            voteAverageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            voteAverageLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            voteAverageLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
+            detailsStackView.topAnchor.constraint(equalTo: backdropImageView.bottomAnchor, constant: 10),
+            detailsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            detailsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            detailsStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
         ])
     }
 }
