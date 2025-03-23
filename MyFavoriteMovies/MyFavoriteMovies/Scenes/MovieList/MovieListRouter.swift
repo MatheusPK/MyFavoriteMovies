@@ -17,7 +17,7 @@ class MovieListRouter: MovieListRouterProtocol {
     
     func navigateToDetail(movieId: Int) {
         DispatchQueue.main.async { [weak self] in
-            let vc = MovieDetailFactory.build(with: .init())
+            let vc = MovieDetailFactory.build(with: .init(movieId: movieId))
             self?.viewController?.navigationController?.pushViewController(vc, animated: true)
         }
     }

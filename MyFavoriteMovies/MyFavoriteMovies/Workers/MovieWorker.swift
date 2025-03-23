@@ -7,6 +7,7 @@
 
 protocol MovieWorkerProtocol {
     func getMovies(for term: String, completion: @escaping (Result<[Movie], RequestError>) -> Void)
+    func getMovieDetail(for id: Int, completion: @escaping (Result<MovieDetail, RequestError>) -> Void)
 }
 
 class MovieWorker: MovieWorkerProtocol {
@@ -26,6 +27,17 @@ class MovieWorker: MovieWorkerProtocol {
                 }
                 
                 completion(.failure(.emptyData))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func getMovieDetail(for id: Int, completion: @escaping (Result<MovieDetail, RequestError>) -> Void) {
+        requestProvider.make(MoviesRequest.detail(id: id)) { (result: (Result<MovieDetail, RequestError>)) in
+            switch result {
+            case .success(let movieDetail):
+                completion(.success(movieDetail))
             case .failure(let error):
                 completion(.failure(error))
             }

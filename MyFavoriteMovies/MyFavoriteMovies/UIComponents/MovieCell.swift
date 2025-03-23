@@ -13,6 +13,7 @@ class MovieCell: UICollectionViewCell {
         let stackView = UIStackView(arrangedSubviews: [poster, movieTitle, rating, heartButton])
         stackView.axis = .vertical
         stackView.spacing = 4
+        stackView.alignment = .center
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.distribution = .fill
         return stackView
@@ -24,6 +25,7 @@ class MovieCell: UICollectionViewCell {
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 4
+        imageView.setContentHuggingPriority(.defaultLow, for: .vertical)
         imageView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
         return imageView
     }()
@@ -51,6 +53,8 @@ class MovieCell: UICollectionViewCell {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(systemName: "heart"), for: .normal)
         button.tintColor = .red
+        button.setContentHuggingPriority(.required, for: .horizontal)
+        button.setContentCompressionResistancePriority(.required, for: .horizontal)
         button.addTarget(self, action: #selector(heartButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -90,7 +94,7 @@ extension MovieCell: ViewCode {
             mainStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 2),
             mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -2),
             mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -2),
-            poster.heightAnchor.constraint(lessThanOrEqualTo: poster.widthAnchor, multiplier: 1.5),
+            poster.heightAnchor.constraint(equalTo: poster.widthAnchor, multiplier: 1.5),
             heartButton.widthAnchor.constraint(equalToConstant: 30),
             heartButton.heightAnchor.constraint(equalToConstant: 30)
         ])
