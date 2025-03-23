@@ -9,10 +9,12 @@ import Foundation
 
 protocol RequestProviderProtocol {
     func make<T: Decodable>(_ request: Request, completion: @escaping (Result<T?, RequestError>) -> Void)
+    func fetchData(_ request: Request, completion: @escaping (Result<Data, RequestError>) -> Void)
 }
 
 class RequestProvider: RequestProviderProtocol {
-    func make<T: Decodable>(_ request: Request, completion: @escaping (Result<T?, RequestError>) -> Void) {
+    
+    func fetchData(_ request: Request, completion: @escaping (Result<Data, RequestError>) -> Void) {
         guard let urlRequest = request.urlRequest() else {
             completion(.failure(.invalidURL))
             return
@@ -20,7 +22,7 @@ class RequestProvider: RequestProviderProtocol {
         
         let dataTask = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
             if let error = error {
-                completion(.failure(.requestError))
+                completion(.failure(.requestError(error)))
                 return
             }
             
@@ -29,20 +31,30 @@ class RequestProvider: RequestProviderProtocol {
                 return
             }
             
-            if let data = data {
+            guard let data = data else {
+                completion(.failure(.invalidResponse))
+                return
+            }
+            
+            completion(.success(data))
+        }
+        
+        dataTask.resume()
+    }
+    
+    func make<T: Decodable>(_ request: Request, completion: @escaping (Result<T?, RequestError>) -> Void) {
+        fetchData(request) { result in
+            switch result {
+            case .success(let data):
                 do {
                     let decodedData = try JSONDecoder().decode(T.self, from: data)
                     completion(.success(decodedData))
                 } catch {
-                    print(error)
                     completion(.failure(.decodingFailed))
                 }
-                return
+            case .failure(let error):
+                completion(.failure(error))
             }
-            
-            completion(.success(nil))
         }
-        
-        dataTask.resume()
     }
 }

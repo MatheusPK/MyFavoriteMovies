@@ -10,9 +10,9 @@ protocol MovieWorkerProtocol {
 }
 
 class MovieWorker: MovieWorkerProtocol {
-    let requestProvider: RequestProvider
+    let requestProvider: RequestProviderProtocol
     
-    init(requestProvider: RequestProvider) {
+    init(requestProvider: RequestProviderProtocol) {
         self.requestProvider = requestProvider
     }
     

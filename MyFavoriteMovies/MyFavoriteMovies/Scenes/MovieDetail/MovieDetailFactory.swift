@@ -8,8 +8,9 @@
 import UIKit
 
 class MovieDetailFactory: SceneFactory {
+    struct Dependencies {}
     
-    static func build() -> UIViewController {
+    static func build(with dependencies: Dependencies) -> UIViewController {
         let movieDetailVC = MovieDetailViewController()
         return movieDetailVC
     }

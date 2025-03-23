@@ -9,12 +9,16 @@ protocol ViewCode {
     func setup()
     func addSubviews()
     func addConstraints()
+    func addExtraConfiguration()
 }
 
 extension ViewCode {
     func setup() {
         addSubviews()
         addConstraints()
+        addExtraConfiguration()
     }
+    
+    func addExtraConfiguration() {}
 }
 

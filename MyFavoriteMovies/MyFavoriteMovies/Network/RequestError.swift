@@ -8,6 +8,7 @@
 enum RequestError: Error {
     case invalidURL
     case decodingFailed
-    case requestError
+    case requestError(Error)
     case invalidResponse
+    case emptyData
 }

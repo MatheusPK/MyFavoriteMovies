@@ -8,5 +8,6 @@
 import UIKit
 
 protocol SceneFactory {
-    static func build() -> UIViewController
+    associatedtype Dependencies
+    static func build(with dependencies: Dependencies) -> UIViewController
 }

@@ -8,8 +8,9 @@
 import UIKit
 
 class SearchFactory: SceneFactory {
+    struct Dependencies {}
     
-    static func build() -> UIViewController {
+    static func build(with dependencies: Dependencies) -> UIViewController {
         let requestProvider = RequestProvider()
         let movieWorker = MovieWorker(requestProvider: requestProvider)
         let interactor = SearchInteractor(movieWorker: movieWorker)

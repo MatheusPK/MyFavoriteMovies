@@ -1,5 +1,5 @@
 //
-//  SearchRouter.swift
+//  MovieListRouter.swift
 //  MyFavoriteMovies
 //
 //  Created by Matheus Pereira Kulick on 21/03/25.
@@ -7,17 +7,17 @@
 
 import UIKit
 
-protocol SearchRouterProtocol {
-    func goToMovieList(movies: [Movie])
+protocol MovieListRouterProtocol {
+    func navigateToDetail(movieId: Int)
 }
 
-class SearchRouter: SearchRouterProtocol {
+class MovieListRouter: MovieListRouterProtocol {
     
     weak var viewController: UIViewController?
     
-    func goToMovieList(movies: [Movie]) {
+    func navigateToDetail(movieId: Int) {
         DispatchQueue.main.async { [weak self] in
-            let vc = MovieListFactory.build(with: .init(movies: movies))
+            let vc = MovieDetailFactory.build(with: .init())
             self?.viewController?.navigationController?.pushViewController(vc, animated: true)
         }
     }

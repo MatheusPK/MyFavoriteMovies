@@ -43,6 +43,10 @@ class ErrorView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    public func setErrorMessage(_ message: String) {
+        label.text = message
+    }
 }
 
 extension ErrorView: ViewCode {
