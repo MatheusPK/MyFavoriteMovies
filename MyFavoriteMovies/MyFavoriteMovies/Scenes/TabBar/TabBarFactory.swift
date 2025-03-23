@@ -24,9 +24,7 @@ class TabBarFactory: SceneFactory {
     }
     
     private static func buildFavoritesTab() -> UIViewController {
-        let favoriteMovieWorker = FavoriteMovieWorker()
-        let favoriteMovies = favoriteMovieWorker.getFavorites()
-        let favoritesVC = FavoritesFactory.build(with: .init(movies: favoriteMovies))
+        let favoritesVC = FavoritesMovieListFactory.build(with: .init())
         favoritesVC.tabBarItem = UITabBarItem(title: "Favorites", image: UIImage(systemName: "heart"), tag: 1)
         return UINavigationController(rootViewController: favoritesVC)
     }

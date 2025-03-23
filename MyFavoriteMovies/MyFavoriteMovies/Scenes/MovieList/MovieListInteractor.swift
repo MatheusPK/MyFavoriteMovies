@@ -8,6 +8,7 @@
 protocol MovieListInteractorInput {
     func isFavorite(movie: Movie) -> Bool
     func toggleFavorite(for movie: Movie)
+    func getFavorites() -> [Movie]
 }
 
 protocol MovieListInteractorOutput: AnyObject {
@@ -30,5 +31,9 @@ class MovieListInteractor: MovieListInteractorInput {
     func toggleFavorite(for movie: Movie) {
         worker.toggleFavorite(movie: movie)
         output?.didToggleFavoriteSuccesfuly(for: movie)
+    }
+    
+    func getFavorites() -> [Movie] {
+        worker.getFavorites()
     }
 }

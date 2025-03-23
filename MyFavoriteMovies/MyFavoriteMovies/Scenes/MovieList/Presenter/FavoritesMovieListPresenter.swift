@@ -1,13 +1,13 @@
 //
-//  FavoritesPresenter.swift
+//  FavoritesMovieListPresenter.swift
 //  MyFavoriteMovies
 //
 //  Created by Matheus Pereira Kulick on 23/03/25.
 //
 
-class FavoritesPresenter: MovieListPresenterInput {
+class FavoritesMovieListPresenter: MovieListPresenterInput {
     
-    private var movies: [Movie]
+    private var movies: [Movie] = []
     weak var output: MovieListPresenterOutput?
     var interactor: MovieListInteractorInput
     var router: MovieListRouterProtocol
@@ -16,8 +16,7 @@ class FavoritesPresenter: MovieListPresenterInput {
         movies.count
     }
     
-    init(movies: [Movie], interactor: MovieListInteractorInput, router: MovieListRouterProtocol) {
-        self.movies = movies
+    init(interactor: MovieListInteractorInput, router: MovieListRouterProtocol) {
         self.interactor = interactor
         self.router = router
     }
@@ -42,9 +41,14 @@ class FavoritesPresenter: MovieListPresenterInput {
     func isFavorite(movie: Movie) -> Bool {
         return interactor.isFavorite(movie: movie)
     }
+    
+    func reloadMovies() {
+        movies = interactor.getFavorites()
+        output?.reloadData()
+    }
 }
 
-extension FavoritesPresenter: MovieListInteractorOutput {
+extension FavoritesMovieListPresenter: MovieListInteractorOutput {
     func didToggleFavoriteSuccesfuly(for movie: Movie) {
         if !interactor.isFavorite(movie: movie) {
             movies.removeAll { $0.id == movie.id }

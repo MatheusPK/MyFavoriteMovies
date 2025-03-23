@@ -5,18 +5,6 @@
 //  Created by Matheus Pereira Kulick on 21/03/25.
 //
 
-protocol MovieListPresenterInput {
-    var numberOfMovies: Int { get }
-    func movie(at index: Int) -> Movie
-    func didSelectMovie(at index: Int)
-    func didToggleFavorite(at index: Int)
-    func isFavorite(movie: Movie) -> Bool
-}
-
-protocol MovieListPresenterOutput: AnyObject {
-    func reloadData()
-}
-
 class MovieListPresenter: MovieListPresenterInput {
     
     private var movies: [Movie]
@@ -53,6 +41,10 @@ class MovieListPresenter: MovieListPresenterInput {
     
     func isFavorite(movie: Movie) -> Bool {
         return interactor.isFavorite(movie: movie)
+    }
+    
+    func reloadMovies() {
+        output?.reloadData()
     }
 }
 
