@@ -71,7 +71,9 @@ extension MovieListViewController: UICollectionViewDataSource {
         }
         
         let movie = presenter.movie(at: indexPath.row)
-        cell.configure(with: movie)
+        cell.configure(with: movie, didTapHeartButton: { [weak self] in
+            self?.presenter.didToggleFavorite(at: indexPath.row)
+        })
         return cell
     }
 }

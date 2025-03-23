@@ -10,7 +10,7 @@ import UIKit
 class MovieCell: UICollectionViewCell {
     
     private lazy var mainStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [poster, movieTitle, rating])
+        let stackView = UIStackView(arrangedSubviews: [poster, movieTitle, rating, heartButton])
         stackView.axis = .vertical
         stackView.spacing = 4
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -46,6 +46,17 @@ class MovieCell: UICollectionViewCell {
         return label
     }()
     
+    private lazy var heartButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(systemName: "heart"), for: .normal)
+        button.tintColor = .red
+        button.addTarget(self, action: #selector(heartButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private var didTapHeartButton: (() -> ())?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -55,10 +66,14 @@ class MovieCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with movie: Movie) {
+    func configure(with movie: Movie, didTapHeartButton: () -> ()) {
         poster.setImage(from: MoviesRequest.image(path: movie.posterPath ?? ""), placeholder: UIImage(systemName: "movieclapper"))
         movieTitle.text = movie.originalTitle
         rating.text = String(format: "Rating: %.1f/10", movie.voteAverage ?? 0)
+    }
+    
+    @objc private func heartButtonTapped() {
+        didTapHeartButton?()
     }
 }
 
@@ -73,7 +88,9 @@ extension MovieCell: ViewCode {
             mainStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 2),
             mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -2),
             mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -2),
-            poster.heightAnchor.constraint(lessThanOrEqualTo: poster.widthAnchor, multiplier: 1.5)
+            poster.heightAnchor.constraint(lessThanOrEqualTo: poster.widthAnchor, multiplier: 1.5),
+            heartButton.widthAnchor.constraint(equalToConstant: 30),
+            heartButton.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
     
