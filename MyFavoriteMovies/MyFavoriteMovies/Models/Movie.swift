@@ -15,11 +15,18 @@ struct MoviesResult: Codable {
     }
 }
 
-struct Movie: Codable {
+struct Movie: Codable, Equatable {
     let id: Int?
     let originalTitle: String?
     let posterPath: String?
     let voteAverage: Double?
+    
+    init(id: Int? = nil, originalTitle: String? = nil, posterPath: String? = nil, voteAverage: Double? = nil) {
+        self.id = id
+        self.originalTitle = originalTitle
+        self.posterPath = posterPath
+        self.voteAverage = voteAverage
+    }
 
     enum CodingKeys: String, CodingKey {
         case id = "id"
