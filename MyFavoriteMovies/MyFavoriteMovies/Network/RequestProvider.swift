@@ -8,7 +8,7 @@
 import Foundation
 
 protocol RequestProviderProtocol {
-    func make<T: Decodable>(_ request: Request, completion: @escaping (Result<T?, RequestError>) -> Void)
+    func make<T: Decodable>(_ request: Request, completion: @escaping (Result<T, RequestError>) -> Void)
     func fetchData(_ request: Request, completion: @escaping (Result<Data, RequestError>) -> Void)
 }
 
@@ -42,7 +42,7 @@ class RequestProvider: RequestProviderProtocol {
         dataTask.resume()
     }
     
-    func make<T: Decodable>(_ request: Request, completion: @escaping (Result<T?, RequestError>) -> Void) {
+    func make<T: Decodable>(_ request: Request, completion: @escaping (Result<T, RequestError>) -> Void) {
         fetchData(request) { result in
             switch result {
             case .success(let data):

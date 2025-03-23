@@ -28,13 +28,15 @@ class SearchPresenter: SearchPresenterInput {
     }
     
     func search(term: String?) {
+        output?.setError(isActive: false)
+        output?.setLoading(isActive: true)
+        
         guard let term, !term.isEmpty else {
+            output?.setLoading(isActive: false)
             output?.showEmptyTermAlert()
             return
         }
         
-        output?.setError(isActive: false)
-        output?.setLoading(isActive: true)
         interactor.search(term: term)
     }
 }
