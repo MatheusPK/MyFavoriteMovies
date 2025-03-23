@@ -43,9 +43,7 @@ class MovieListPresenter: MovieListPresenterInput {
         return interactor.isFavorite(movie: movie)
     }
     
-    func reloadMovies() {
-        output?.reloadData()
-    }
+    func reloadMovies() {}
 }
 
 extension MovieListPresenter: MovieListInteractorOutput {
