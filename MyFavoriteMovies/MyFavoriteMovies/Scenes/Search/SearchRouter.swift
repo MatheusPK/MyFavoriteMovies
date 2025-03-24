@@ -18,6 +18,7 @@ class SearchRouter: SearchRouterProtocol {
     func goToMovieList(movies: [Movie]) {
         DispatchQueue.main.async { [weak self] in
             let vc = MovieListFactory.build(with: .init(movies: movies))
+            vc.hidesBottomBarWhenPushed = true
             self?.viewController?.navigationController?.pushViewController(vc, animated: true)
         }
     }
